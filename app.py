@@ -1,24 +1,20 @@
 import streamlit as st
-import pandas as pd
+import numpy as np
 from sklearn.linear_model import LinearRegression
 
-st.title("Student Marks Prediction App")
+# Training data
+X = np.array([[1], [2], [3], [4], [5]])
+y = np.array([2, 4, 6, 8, 10])
 
-data = {
-    'Hours': [1,2,3,4,5,6,7,8],
-    'Marks': [10,20,30,40,50,60,70,80]
-}
-
-df = pd.DataFrame(data)
-
-X = df[['Hours']]
-y = df['Marks']
-
+# Model
 model = LinearRegression()
 model.fit(X, y)
 
-hours = st.number_input("Enter study hours:", min_value=0.0, max_value=24.0, step=0.5)
+# UI
+st.title("Student Marks Prediction App")
+
+hours = st.number_input("Enter study hours:")
 
 if st.button("Predict"):
-    prediction = model.predict([[hours]])
-    st.success(f"Predicted Marks: {round(prediction[0], 2)}")
+    prediction = model.predict(np.array([[hours]]))
+    st.success(f"Predicted Marks: {prediction[0]:.2f}")
